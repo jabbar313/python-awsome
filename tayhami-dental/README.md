@@ -1,5 +1,5 @@
-# Tayhami Dental Preview
+# Tayhami Dental
 
-A private-review website concept for Tayhami Dental, a dental clinic in Adoor.
+Static multi-page sample website for Tayhami Dental.
 
-This static preview is not the clinic's current official website. It contains no active forms, booking integrations, or patient-data collection.
+Live site: https://jabbar313.github.io/python-awsome/
