@@ -23,10 +23,13 @@
         .legal-wrap a{color:#24a3b1;}
         .legal-foot{text-align:center;padding:40px 24px;border-top:1px solid #e2e2e2;color:#758696;font-size:14px;}
     </style>
+<style id="tayhami-preview-safety-style">
+.section_team,.section_testimonial,.section_job,.section_awards,.section_success{display:none!important}
+#tayhami-concept-notice{position:sticky;top:0;z-index:2147483000;padding:10px 16px;background:#0c3830;color:#fff;text-align:center;font:600 12px/1.4 Arial,sans-serif;letter-spacing:.01em}
+[data-preview-disabled="true"]{cursor:not-allowed!important;opacity:.72}
+</style>
 </head>
-<body>
-<div id="tayhami-concept-badge" style="position:fixed;left:16px;bottom:16px;z-index:2147483000;padding:9px 13px;border-radius:999px;background:rgba(12,56,48,.94);color:#fff;font:600 12px/1.2 Arial,sans-serif;letter-spacing:.02em;box-shadow:0 8px 24px rgba(0,0,0,.18);pointer-events:none">Website concept for Tayhami Dental · Preview only</div>
-
+<body><div id="tayhami-concept-notice">Website concept prepared for Tayhami Dental — not the clinic’s current official website. Demo content only; services, team, awards and contact details require clinic confirmation.</div>
     <div class="legal-nav">
         <a href="index.html"><img src="assets/img/lumora-logo.svg" alt="Tayhami Dental logo" height="30"/></a>
         <a class="back" href="index.html">&larr; Back to home</a>
@@ -47,7 +50,7 @@
 <h2>Managing cookies</h2>
 <p>You can control or delete cookies through your browser settings at any time. Blocking some cookies may affect how parts of the site work.</p>
 <h2>Contact</h2>
-<p>Questions about our use of cookies? Email <a href="mailto:tayhamilabs@agentmail.to">tayhamilabs@agentmail.to</a>.</p>
+<p>Questions about our use of cookies? Email <a href="#" data-preview-disabled="true">Contact details to be confirmed</a>.</p>
 
 </main>
     <div class="legal-foot">&copy; 2026 Tayhami Dental. All rights reserved. &middot; <a href="terms.html" style="color:#758696;">Terms &amp; Conditions</a></div>
@@ -70,17 +73,6 @@
     if(im.complete && im.naturalWidth===0 && !im.dataset.fbk){ im.dataset.fbk='1'; im.src=ph(im.alt); }
   }
   document.querySelectorAll('img').forEach(bind);
-})();
-</script>
-
-<script id="tayhami-preview-safety">
-(function(){
-  function block(e){e.preventDefault();e.stopImmediatePropagation();return false;}
-  document.addEventListener('submit', block, true);
-  document.addEventListener('click', function(e){
-    var a=e.target.closest('a'); if(!a) return; var h=(a.getAttribute('href')||'').toLowerCase();
-    if(h.indexOf('mailto:')===0||h.indexOf('tel:')===0||h.indexOf('wa.me')>=0||h.indexOf('whatsapp')>=0){block(e);}
-  }, true);
 })();
 </script>
 </body>

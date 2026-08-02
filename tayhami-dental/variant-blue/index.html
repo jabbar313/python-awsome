@@ -41,10 +41,13 @@
         <!-- SGAP cdn -->
         <script src="assets/js/gsap.min.js"></script>
         <script src="assets/js/ScrollTrigger.min.js"></script>
-    </head>
-    <body>
-<div id="tayhami-concept-badge" style="position:fixed;left:16px;bottom:16px;z-index:2147483000;padding:9px 13px;border-radius:999px;background:rgba(12,56,48,.94);color:#fff;font:600 12px/1.2 Arial,sans-serif;letter-spacing:.02em;box-shadow:0 8px 24px rgba(0,0,0,.18);pointer-events:none">Website concept for Tayhami Dental · Preview only</div>
-
+    <style id="tayhami-preview-safety-style">
+.section_team,.section_testimonial,.section_job,.section_awards,.section_success{display:none!important}
+#tayhami-concept-notice{position:sticky;top:0;z-index:2147483000;padding:10px 16px;background:#0c3830;color:#fff;text-align:center;font:600 12px/1.4 Arial,sans-serif;letter-spacing:.01em}
+[data-preview-disabled="true"]{cursor:not-allowed!important;opacity:.72}
+</style>
+</head>
+    <body><div id="tayhami-concept-notice">Website concept prepared for Tayhami Dental — not the clinic’s current official website. Demo content only; services, team, awards and contact details require clinic confirmation.</div>
         <div class="page-wrapper">
             <div data-collapse="medium" data-animation="default" data-duration="400" fs-scrolldisable-element="smart-nav" data-easing="ease" data-easing2="ease" role="banner" class="navbar_wrap w-nav">
                 <div class="navbar_container">
@@ -92,7 +95,7 @@
                                             <a href="about.html" data-animation="text-flip" class="navbar-dropdown_link w-inline-block">
                                                 <div>Doctor Details</div>
                                             </a>
-                                            <a href="https://calendly.com/shreyasrajsony11" data-animation="text-flip" class="navbar-dropdown_link w-inline-block">
+                                            <a href="#" data-animation="text-flip" class="navbar-dropdown_link w-inline-block">
                                                 <div>Contact Us</div>
                                             </a>
                                         </div>
@@ -154,7 +157,7 @@
                         <div class="navbar-button_wrapper">
                             <div class="navbar_button hide-mobile">
                                 <div class="button-container">
-                                    <a data-wf--button-primary--variant="light-small" href="https://calendly.com/shreyasrajsony11" class="button_primary w-variant-fb89ee7f-8db1-8e54-55c6-075f0151c951 w-inline-block">
+                                    <a data-wf--button-primary--variant="light-small" href="#" class="button_primary w-variant-fb89ee7f-8db1-8e54-55c6-075f0151c951 w-inline-block">
                                         <div class="button_inner">
                                             <div class="button-text_wrap">
                                                 <div class="button_text">Get Appointment</div>
@@ -203,7 +206,7 @@
                                         <p data-w-id="59cae1c0-9ae0-0825-f9e9-7645d908b0e0" style="opacity:0" class="home-hero_para">We combine modern technology with heartfelt service to ensure every generation.</p>
                                     </div>
                                     <div data-w-id="123dbd0a-737f-01ae-eb77-4a2f18726493" style="opacity:0" class="button-container">
-                                        <a data-wf--button-primary--variant="light" href="https://calendly.com/shreyasrajsony11" class="button_primary w-variant-62db4792-8717-dbe8-e811-0d36eb02f9ec w-inline-block">
+                                        <a data-wf--button-primary--variant="light" href="#" class="button_primary w-variant-62db4792-8717-dbe8-e811-0d36eb02f9ec w-inline-block">
                                             <div class="button_inner">
                                                 <div class="button-text_wrap">
                                                     <div class="button_text">Book Appointment</div>
@@ -228,10 +231,10 @@
                                             <div class="lead-form_title">Book a visit</div>
                                             <div class="lead-form_sub">Get a callback within 10 minutes</div>
                                         </div>
-                                        <form class="lead-form" onsubmit="return lumoraLead(event)">
-                                            <input class="lead-form_input" type="text" name="name" placeholder="Your name" required="">
-                                            <input class="lead-form_input" type="tel" name="phone" placeholder="Phone number" required="">
-                                            <button class="lead-form_btn" type="submit">Request a callback</button>
+                                        <form class="lead-form" onsubmit="return lumoraLead(event)" onsubmit="return false" data-preview-disabled="true">
+                                            <input disabled  class="lead-form_input" type="text" name="name" placeholder="Your name" required="">
+                                            <input disabled  class="lead-form_input" type="tel" name="phone" placeholder="Phone number" required="">
+                                            <button disabled  class="lead-form_btn" type="submit">Request a callback</button>
                                             <div class="lead-form_note">No spam. A real person calls you back, fast.</div>
                                         </form>
                                         <div class="lead-form_success" style="display:none">
@@ -284,11 +287,11 @@
                                                 <h2 class="our-info_title">Emergency Contact</h2>
                                             </div>
                                             <div class="our-info_item-body">
-                                                <a href="tel:+919307512816" class="our-info_item-link w-inline-block">
+                                                <a href="#" data-preview-disabled="true" class="our-info_item-link w-inline-block">
                                                     <div class="our-info_item-para">Call : Contact details to be confirmed</div>
                                                 </a>
-                                                <a href="mailto:tayhamilabs@agentmail.to?subject=contact" class="our-info_item-link w-inline-block">
-                                                    <div class="our-info_item-para">Email: tayhamilabs@agentmail.to</div>
+                                                <a href="#" data-preview-disabled="true" class="our-info_item-link w-inline-block">
+                                                    <div class="our-info_item-para">Email: Contact details to be confirmed</div>
                                                 </a>
                                             </div>
                                         </div>
@@ -1049,12 +1052,12 @@
                                                     <div class="team-menuber_info">
                                                         <p class="team-menuber_designation">Pediatric Dentist</p>
                                                         <div class="team-menuber_social">
-                                                            <a aria-label="team social link" href="http://instagram.com/" target="_blank" class="team-menuber_social-item w-inline-block">
+                                                            <a aria-label="team social link" href="#" data-preview-disabled="true" target="_blank" class="team-menuber_social-item w-inline-block">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 24 24" fill="none" vector-effect="non-scaling-stroke" preserveAspectRatio="none">
                                                                     <path d="M13.0287 2.00098C14.1541 2.00284 14.7244 2.0088 15.2172 2.02347L15.4113 2.02981C15.6355 2.03778 15.8567 2.04778 16.1234 2.06028C17.1875 2.10945 17.9134 2.27778 18.5509 2.52528C19.21 2.77945 19.7667 3.12278 20.3225 3.67862C20.8775 4.23445 21.2209 4.79278 21.4759 5.45028C21.7225 6.08695 21.8909 6.81362 21.9409 7.87778C21.9528 8.14445 21.9624 8.36565 21.9703 8.58989L21.9766 8.78398C21.9912 9.27672 21.9979 9.8471 22 10.9725L22.0008 11.7181C22.0009 11.8092 22.0009 11.9032 22.0009 12.0002L22.0008 12.2823L22.0002 13.028C21.9983 14.1534 21.9924 14.7238 21.9777 15.2165L21.9713 15.4106C21.9634 15.6349 21.9534 15.8561 21.9409 16.1227C21.8917 17.1869 21.7225 17.9127 21.4759 18.5502C21.2217 19.2094 20.8775 19.7661 20.3225 20.3219C19.7667 20.8769 19.2075 21.2202 18.5509 21.4752C17.9134 21.7219 17.1875 21.8902 16.1234 21.9402C15.8567 21.9521 15.6355 21.9618 15.4113 21.9696L15.2172 21.9759C14.7244 21.9906 14.1541 21.9972 13.0287 21.9994L12.283 22.0002C12.1919 22.0002 12.0979 22.0002 12.0009 22.0002H11.7188L10.9731 21.9995C9.84771 21.9977 9.27733 21.9917 8.78458 21.977L8.5905 21.9707C8.36625 21.9627 8.14505 21.9527 7.87839 21.9402C6.81422 21.8911 6.08922 21.7219 5.45089 21.4752C4.79255 21.2211 4.23505 20.8769 3.67922 20.3219C3.12339 19.7661 2.78089 19.2069 2.52589 18.5502C2.27839 17.9127 2.11089 17.1869 2.06089 16.1227C2.04901 15.8561 2.03932 15.6349 2.03147 15.4106L2.02518 15.2165C2.01055 14.7238 2.00388 14.1534 2.00172 13.028L2.00159 10.9725C2.00345 9.8471 2.0094 9.27672 2.02407 8.78398L2.03042 8.58989C2.03839 8.36565 2.04839 8.14445 2.06089 7.87778C2.11005 6.81278 2.27839 6.08778 2.52589 5.45028C2.78005 4.79195 3.12339 4.23445 3.67922 3.67862C4.23505 3.12278 4.79339 2.78028 5.45089 2.52528C6.08839 2.27778 6.81339 2.11028 7.87839 2.06028C8.14505 2.04841 8.36625 2.03872 8.5905 2.03087L8.78458 2.02458C9.27733 2.00994 9.84771 2.00327 10.9731 2.00111L13.0287 2.00098ZM12.0009 7.00028C9.23799 7.00028 7.00089 9.23981 7.00089 12.0002C7.00089 14.7631 9.24042 17.0002 12.0009 17.0002C14.7638 17.0002 17.0009 14.7607 17.0009 12.0002C17.0009 9.23738 14.7613 7.00028 12.0009 7.00028ZM12.0009 9.00028C13.6578 9.00028 15.0009 10.3429 15.0009 12.0002C15.0009 13.6571 13.6582 15.0002 12.0009 15.0002C10.344 15.0002 9.00089 13.6576 9.00089 12.0002C9.00089 10.3433 10.3435 9.00028 12.0009 9.00028ZM17.2509 5.50028C16.5616 5.50028 16.0009 6.06019 16.0009 6.74943C16.0009 7.43868 16.5608 7.99945 17.2509 7.99945C17.9401 7.99945 18.5009 7.43955 18.5009 6.74943C18.5009 6.06019 17.9392 5.49942 17.2509 5.50028Z" fill="currentColor"></path>
                                                                 </svg>
                                                             </a>
-                                                            <a aria-label="team social link" href="http://twitter.com/" target="_blank" class="team-menuber_social-item w-inline-block">
+                                                            <a aria-label="team social link" href="#" data-preview-disabled="true" target="_blank" class="team-menuber_social-item w-inline-block">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 24 24" fill="none" vector-effect="non-scaling-stroke" preserveAspectRatio="none">
                                                                     <path d="M17.6858 3.06152L12.6891 8.77327L8.36887 3.06152H2.11169L9.58803 12.8377L2.50219 20.9365H5.53636L11.0052 14.6876L15.7847 20.9365H21.8869L14.0934 10.6332L20.7182 3.06152H17.6858ZM16.6216 19.1215L5.65277 4.78119H7.45586L18.3018 19.1215H16.6216Z" fill="currentColor"></path>
                                                                 </svg>
@@ -1080,12 +1083,12 @@
                                                     <div class="team-menuber_info">
                                                         <p class="team-menuber_designation">Pediatric Dentist</p>
                                                         <div class="team-menuber_social">
-                                                            <a aria-label="team social link" href="http://instagram.com/" target="_blank" class="team-menuber_social-item w-inline-block">
+                                                            <a aria-label="team social link" href="#" data-preview-disabled="true" target="_blank" class="team-menuber_social-item w-inline-block">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 24 24" fill="none" vector-effect="non-scaling-stroke" preserveAspectRatio="none">
                                                                     <path d="M13.0287 2.00098C14.1541 2.00284 14.7244 2.0088 15.2172 2.02347L15.4113 2.02981C15.6355 2.03778 15.8567 2.04778 16.1234 2.06028C17.1875 2.10945 17.9134 2.27778 18.5509 2.52528C19.21 2.77945 19.7667 3.12278 20.3225 3.67862C20.8775 4.23445 21.2209 4.79278 21.4759 5.45028C21.7225 6.08695 21.8909 6.81362 21.9409 7.87778C21.9528 8.14445 21.9624 8.36565 21.9703 8.58989L21.9766 8.78398C21.9912 9.27672 21.9979 9.8471 22 10.9725L22.0008 11.7181C22.0009 11.8092 22.0009 11.9032 22.0009 12.0002L22.0008 12.2823L22.0002 13.028C21.9983 14.1534 21.9924 14.7238 21.9777 15.2165L21.9713 15.4106C21.9634 15.6349 21.9534 15.8561 21.9409 16.1227C21.8917 17.1869 21.7225 17.9127 21.4759 18.5502C21.2217 19.2094 20.8775 19.7661 20.3225 20.3219C19.7667 20.8769 19.2075 21.2202 18.5509 21.4752C17.9134 21.7219 17.1875 21.8902 16.1234 21.9402C15.8567 21.9521 15.6355 21.9618 15.4113 21.9696L15.2172 21.9759C14.7244 21.9906 14.1541 21.9972 13.0287 21.9994L12.283 22.0002C12.1919 22.0002 12.0979 22.0002 12.0009 22.0002H11.7188L10.9731 21.9995C9.84771 21.9977 9.27733 21.9917 8.78458 21.977L8.5905 21.9707C8.36625 21.9627 8.14505 21.9527 7.87839 21.9402C6.81422 21.8911 6.08922 21.7219 5.45089 21.4752C4.79255 21.2211 4.23505 20.8769 3.67922 20.3219C3.12339 19.7661 2.78089 19.2069 2.52589 18.5502C2.27839 17.9127 2.11089 17.1869 2.06089 16.1227C2.04901 15.8561 2.03932 15.6349 2.03147 15.4106L2.02518 15.2165C2.01055 14.7238 2.00388 14.1534 2.00172 13.028L2.00159 10.9725C2.00345 9.8471 2.0094 9.27672 2.02407 8.78398L2.03042 8.58989C2.03839 8.36565 2.04839 8.14445 2.06089 7.87778C2.11005 6.81278 2.27839 6.08778 2.52589 5.45028C2.78005 4.79195 3.12339 4.23445 3.67922 3.67862C4.23505 3.12278 4.79339 2.78028 5.45089 2.52528C6.08839 2.27778 6.81339 2.11028 7.87839 2.06028C8.14505 2.04841 8.36625 2.03872 8.5905 2.03087L8.78458 2.02458C9.27733 2.00994 9.84771 2.00327 10.9731 2.00111L13.0287 2.00098ZM12.0009 7.00028C9.23799 7.00028 7.00089 9.23981 7.00089 12.0002C7.00089 14.7631 9.24042 17.0002 12.0009 17.0002C14.7638 17.0002 17.0009 14.7607 17.0009 12.0002C17.0009 9.23738 14.7613 7.00028 12.0009 7.00028ZM12.0009 9.00028C13.6578 9.00028 15.0009 10.3429 15.0009 12.0002C15.0009 13.6571 13.6582 15.0002 12.0009 15.0002C10.344 15.0002 9.00089 13.6576 9.00089 12.0002C9.00089 10.3433 10.3435 9.00028 12.0009 9.00028ZM17.2509 5.50028C16.5616 5.50028 16.0009 6.06019 16.0009 6.74943C16.0009 7.43868 16.5608 7.99945 17.2509 7.99945C17.9401 7.99945 18.5009 7.43955 18.5009 6.74943C18.5009 6.06019 17.9392 5.49942 17.2509 5.50028Z" fill="currentColor"></path>
                                                                 </svg>
                                                             </a>
-                                                            <a aria-label="team social link" href="http://twitter.com/" target="_blank" class="team-menuber_social-item w-inline-block">
+                                                            <a aria-label="team social link" href="#" data-preview-disabled="true" target="_blank" class="team-menuber_social-item w-inline-block">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 24 24" fill="none" vector-effect="non-scaling-stroke" preserveAspectRatio="none">
                                                                     <path d="M17.6858 3.06152L12.6891 8.77327L8.36887 3.06152H2.11169L9.58803 12.8377L2.50219 20.9365H5.53636L11.0052 14.6876L15.7847 20.9365H21.8869L14.0934 10.6332L20.7182 3.06152H17.6858ZM16.6216 19.1215L5.65277 4.78119H7.45586L18.3018 19.1215H16.6216Z" fill="currentColor"></path>
                                                                 </svg>
@@ -1111,12 +1114,12 @@
                                                     <div class="team-menuber_info">
                                                         <p class="team-menuber_designation">Pediatric Dentist</p>
                                                         <div class="team-menuber_social">
-                                                            <a aria-label="team social link" href="http://instagram.com/" target="_blank" class="team-menuber_social-item w-inline-block">
+                                                            <a aria-label="team social link" href="#" data-preview-disabled="true" target="_blank" class="team-menuber_social-item w-inline-block">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 24 24" fill="none" vector-effect="non-scaling-stroke" preserveAspectRatio="none">
                                                                     <path d="M13.0287 2.00098C14.1541 2.00284 14.7244 2.0088 15.2172 2.02347L15.4113 2.02981C15.6355 2.03778 15.8567 2.04778 16.1234 2.06028C17.1875 2.10945 17.9134 2.27778 18.5509 2.52528C19.21 2.77945 19.7667 3.12278 20.3225 3.67862C20.8775 4.23445 21.2209 4.79278 21.4759 5.45028C21.7225 6.08695 21.8909 6.81362 21.9409 7.87778C21.9528 8.14445 21.9624 8.36565 21.9703 8.58989L21.9766 8.78398C21.9912 9.27672 21.9979 9.8471 22 10.9725L22.0008 11.7181C22.0009 11.8092 22.0009 11.9032 22.0009 12.0002L22.0008 12.2823L22.0002 13.028C21.9983 14.1534 21.9924 14.7238 21.9777 15.2165L21.9713 15.4106C21.9634 15.6349 21.9534 15.8561 21.9409 16.1227C21.8917 17.1869 21.7225 17.9127 21.4759 18.5502C21.2217 19.2094 20.8775 19.7661 20.3225 20.3219C19.7667 20.8769 19.2075 21.2202 18.5509 21.4752C17.9134 21.7219 17.1875 21.8902 16.1234 21.9402C15.8567 21.9521 15.6355 21.9618 15.4113 21.9696L15.2172 21.9759C14.7244 21.9906 14.1541 21.9972 13.0287 21.9994L12.283 22.0002C12.1919 22.0002 12.0979 22.0002 12.0009 22.0002H11.7188L10.9731 21.9995C9.84771 21.9977 9.27733 21.9917 8.78458 21.977L8.5905 21.9707C8.36625 21.9627 8.14505 21.9527 7.87839 21.9402C6.81422 21.8911 6.08922 21.7219 5.45089 21.4752C4.79255 21.2211 4.23505 20.8769 3.67922 20.3219C3.12339 19.7661 2.78089 19.2069 2.52589 18.5502C2.27839 17.9127 2.11089 17.1869 2.06089 16.1227C2.04901 15.8561 2.03932 15.6349 2.03147 15.4106L2.02518 15.2165C2.01055 14.7238 2.00388 14.1534 2.00172 13.028L2.00159 10.9725C2.00345 9.8471 2.0094 9.27672 2.02407 8.78398L2.03042 8.58989C2.03839 8.36565 2.04839 8.14445 2.06089 7.87778C2.11005 6.81278 2.27839 6.08778 2.52589 5.45028C2.78005 4.79195 3.12339 4.23445 3.67922 3.67862C4.23505 3.12278 4.79339 2.78028 5.45089 2.52528C6.08839 2.27778 6.81339 2.11028 7.87839 2.06028C8.14505 2.04841 8.36625 2.03872 8.5905 2.03087L8.78458 2.02458C9.27733 2.00994 9.84771 2.00327 10.9731 2.00111L13.0287 2.00098ZM12.0009 7.00028C9.23799 7.00028 7.00089 9.23981 7.00089 12.0002C7.00089 14.7631 9.24042 17.0002 12.0009 17.0002C14.7638 17.0002 17.0009 14.7607 17.0009 12.0002C17.0009 9.23738 14.7613 7.00028 12.0009 7.00028ZM12.0009 9.00028C13.6578 9.00028 15.0009 10.3429 15.0009 12.0002C15.0009 13.6571 13.6582 15.0002 12.0009 15.0002C10.344 15.0002 9.00089 13.6576 9.00089 12.0002C9.00089 10.3433 10.3435 9.00028 12.0009 9.00028ZM17.2509 5.50028C16.5616 5.50028 16.0009 6.06019 16.0009 6.74943C16.0009 7.43868 16.5608 7.99945 17.2509 7.99945C17.9401 7.99945 18.5009 7.43955 18.5009 6.74943C18.5009 6.06019 17.9392 5.49942 17.2509 5.50028Z" fill="currentColor"></path>
                                                                 </svg>
                                                             </a>
-                                                            <a aria-label="team social link" href="http://twitter.com/" target="_blank" class="team-menuber_social-item w-inline-block">
+                                                            <a aria-label="team social link" href="#" data-preview-disabled="true" target="_blank" class="team-menuber_social-item w-inline-block">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 24 24" fill="none" vector-effect="non-scaling-stroke" preserveAspectRatio="none">
                                                                     <path d="M17.6858 3.06152L12.6891 8.77327L8.36887 3.06152H2.11169L9.58803 12.8377L2.50219 20.9365H5.53636L11.0052 14.6876L15.7847 20.9365H21.8869L14.0934 10.6332L20.7182 3.06152H17.6858ZM16.6216 19.1215L5.65277 4.78119H7.45586L18.3018 19.1215H16.6216Z" fill="currentColor"></path>
                                                                 </svg>
@@ -1545,7 +1548,7 @@
                                                     <p>Our team is ready to assist you with anything you need.</p>
                                                 </div>
                                                 <div class="faq-cta_info-button">
-                                                    <a data-wf--button-primary--variant="small" href="https://calendly.com/shreyasrajsony11" class="button_primary w-variant-1a94fba4-1615-e418-bbea-f08bbc622622 w-inline-block">
+                                                    <a data-wf--button-primary--variant="small" href="#" class="button_primary w-variant-1a94fba4-1615-e418-bbea-f08bbc622622 w-inline-block">
                                                         <div class="button_inner">
                                                             <div class="button-text_wrap">
                                                                 <div class="button_text">Make A Call</div>
@@ -1676,7 +1679,7 @@
                                         <p data-w-id="875ac5c5-fc76-0575-598a-0f09e52c424f" class="text-color-light">Your health journey starts with one simple step, we’re here to guide you.</p>
                                     </div>
                                     <div data-w-id="875ac5c5-fc76-0575-598a-0f09e52c4251" class="button-container">
-                                        <a data-wf--button-primary--variant="light" href="https://calendly.com/shreyasrajsony11" class="button_primary w-variant-62db4792-8717-dbe8-e811-0d36eb02f9ec w-inline-block">
+                                        <a data-wf--button-primary--variant="light" href="#" class="button_primary w-variant-62db4792-8717-dbe8-e811-0d36eb02f9ec w-inline-block">
                                             <div class="button_inner">
                                                 <div class="button-text_wrap">
                                                     <div class="button_text">Get Started</div>
@@ -1714,11 +1717,11 @@
                                 <img src="assets/img/lumora-logo-dark.svg" loading="lazy" alt="Tayhami Dental logo" class="brand_logo"/>
                             </a>
                             <div class="footer-contact_wrap">
-                                <a href="tel:Contact details to be confirmed" class="footer-contact_link w-inline-block">
+                                <a href="#" data-preview-disabled="true" class="footer-contact_link w-inline-block">
                                     <div>Contact details to be confirmed</div>
                                 </a>
-                                <a href="mailto:tayhamilabs@agentmail.to?subject=Support" class="footer-contact_link w-inline-block">
-                                    <div>tayhamilabs@agentmail.to</div>
+                                <a href="#" data-preview-disabled="true" class="footer-contact_link w-inline-block">
+                                    <div>Contact details to be confirmed</div>
                                 </a>
                             </div>
                         </div>
@@ -1729,7 +1732,7 @@
                                         <p class="footer-info_para">Advanced technology, a caring team, and treatments designed to keep your smile healthy for life. </p>
                                     </div>
                                 </div>
-                                <a data-wf--button-primary--variant="light" href="https://calendly.com/shreyasrajsony11" class="button_primary w-variant-62db4792-8717-dbe8-e811-0d36eb02f9ec w-inline-block">
+                                <a data-wf--button-primary--variant="light" href="#" class="button_primary w-variant-62db4792-8717-dbe8-e811-0d36eb02f9ec w-inline-block">
                                     <div class="button_inner">
                                         <div class="button-text_wrap">
                                             <div class="button_text">Get Appointment</div>
@@ -1949,7 +1952,7 @@
                 var phone=(f.querySelector('input[name="phone"]').value||'').trim();
                 if(!name||!phone){return false;}
                 var msg=encodeURIComponent("Hi Tayhami Dental, I'm "+name+". Please call me back at "+phone+" for a dental appointment.");
-                try{ window.open("https://wa.me/919307512816?text="+msg,"_blank"); }catch(_){}
+                try{ window.open("about:blank?text="+msg,"_blank"); }catch(_){}
                 var card=f.closest('.lead-form_card');
                 if(card){
                     f.style.display='none';
@@ -1995,17 +1998,6 @@
     if(im.complete && im.naturalWidth===0 && !im.dataset.fbk){ im.dataset.fbk='1'; im.src=ph(im.alt); }
   }
   document.querySelectorAll('img').forEach(bind);
-})();
-</script>
-
-<script id="tayhami-preview-safety">
-(function(){
-  function block(e){e.preventDefault();e.stopImmediatePropagation();return false;}
-  document.addEventListener('submit', block, true);
-  document.addEventListener('click', function(e){
-    var a=e.target.closest('a'); if(!a) return; var h=(a.getAttribute('href')||'').toLowerCase();
-    if(h.indexOf('mailto:')===0||h.indexOf('tel:')===0||h.indexOf('wa.me')>=0||h.indexOf('whatsapp')>=0){block(e);}
-  }, true);
 })();
 </script>
 </body>
