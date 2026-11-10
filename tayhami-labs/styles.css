@@ -101,6 +101,10 @@ ol, ul { list-style: none; }
   50% { scale: 1.035; }
 }
 .hero__inner { position: relative; }
+/* WebGL orb: hidden until its first frame draws; the CSS orb remains the fallback. */
+.hero__canvas { display: none; position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; will-change: transform; }
+.hero.is-webgl .hero__canvas { display: block; }
+.hero.is-webgl .hero__orb { display: none; }
 .hero__kicker {
   font-size: clamp(11px, 1.05vw, 13px); letter-spacing: .14em; text-transform: uppercase; color: rgba(233, 229, 218, .72);
 }
