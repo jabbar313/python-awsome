@@ -54,7 +54,7 @@ vec3 environment(vec3 r, float t) {
 
 void main() {
   vec2 centre = uRes * vec2(0.5, 0.49);
-  float unit = min(uRes.x, uRes.y) * 0.8;
+  float unit = min(uRes.x, uRes.y) * 0.9;
   vec2 uv = gl_FragCoord.xy / uRes;
 
   // Background: near-black with a faint bronze halo that dims with scroll.
