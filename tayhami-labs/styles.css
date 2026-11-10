@@ -261,7 +261,7 @@ ol, ul { list-style: none; }
   .hero__foot { bottom: 28px; }
   .hero__place { display: none; }
   .hero__orb { width: 110vmin; top: 42%; }
-  .hero__mark { display: none; }
+  .hero__mark { width: 60px; margin-bottom: 10px; }
   .service { grid-template-columns: 1fr; gap: 10px; }
   .value { grid-template-columns: 1fr; gap: 8px; }
   .contact-lines li { grid-template-columns: 1fr; gap: 4px; }
