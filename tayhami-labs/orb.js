@@ -19,14 +19,19 @@ uniform float uTime;
 uniform vec2 uPointer;
 uniform float uDim;
 
-// Surface wobble: three sine lobes travelling over the sphere, plus a finer ripple.
+// Surface wobble: spherical-harmonic lobes. Each lobe averages to zero over the sphere, so the
+// average radius stays fixed while the lumps travel across the surface.
 float wobble(vec3 p, float t) {
-  return 0.095 * sin(2.0 * p.x + 1.3 * p.y + 0.60 * t)
-       + 0.060 * sin(1.7 * p.y - 1.1 * p.z + 0.45 * t)
-       + 0.025 * sin(3.0 * p.z + 0.9 * p.x - 0.80 * t);
+  vec3 n = p / max(length(p), 0.001);
+  float zonal2 = 0.5 * (3.0 * n.z * n.z - 1.0);
+  float tesseral2 = 1.732 * n.x * n.y;
+  float zonal3 = 0.5 * (5.0 * n.z * n.z * n.z - 3.0 * n.z);
+  float tesseral2b = 1.936 * n.y * n.z;
+  return 0.085 * (cos(0.55 * t) * zonal2 + sin(0.42 * t) * tesseral2)
+       + 0.050 * (cos(0.70 * t + 1.0) * zonal3 + sin(0.50 * t) * tesseral2b);
 }
-// Breathing radius.
-float radius(float t) { return 0.66 * (1.0 + 0.025 * sin(0.9 * t)); }
+// Fixed radius: no breathing, so the orb keeps its size.
+float radius(float t) { return 0.66; }
 float field(vec3 p, float t) { return length(p) - radius(t) + wobble(p, t); }
 
 vec3 surfaceNormal(vec3 p, float t) {
