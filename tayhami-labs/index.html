@@ -99,16 +99,20 @@
     </div>
   </section>
 
-  <!-- SERVICES -->
+  <!-- SERVICES: pinned sideways rail on desktop, swipeable row on phones -->
   <section class="section section--alt" id="services" aria-labelledby="services-title">
-    <div class="wrap">
-      <div class="section-head">
-        <p class="label reveal"><span class="label__rule"></span><span>What we do</span></p>
-        <h2 class="display reveal" id="services-title">Digital services that help businesses respond, grow and operate smarter</h2>
-        <p class="lead reveal">From modern websites to AI voice agents and automated booking workflows, we design practical systems around how your business actually works.</p>
-      </div>
-      <ol class="service-list">
-        <li class="service reveal">
+    <div class="rail-trigger" id="rail-trigger">
+      <div class="rail-stage">
+        <div class="wrap">
+          <div class="section-head">
+            <p class="label reveal"><span class="label__rule"></span><span>What we do</span></p>
+            <h2 class="display reveal" id="services-title">Digital services that help businesses respond, grow and operate smarter</h2>
+            <p class="lead reveal">From modern websites to AI voice agents and automated booking workflows, we design practical systems around how your business actually works.</p>
+          </div>
+        </div>
+        <div class="rail-viewport">
+          <ol class="service-rail" id="service-rail">
+          <li class="service">
           <span class="num">[ 01 ]</span>
           <div class="service__body">
             <h3>Modern Business Websites</h3>
@@ -116,7 +120,7 @@
             <p class="tags">Custom design · Mobile-first · SEO-ready · Enquiry-focused</p>
           </div>
         </li>
-        <li class="service reveal">
+          <li class="service">
           <span class="num">[ 02 ]</span>
           <div class="service__body">
             <h3>AI Chatbots &amp; WhatsApp Automation</h3>
@@ -124,7 +128,7 @@
             <p class="tags">AI chat · WhatsApp flows · Lead capture · Fast responses</p>
           </div>
         </li>
-        <li class="service reveal">
+          <li class="service">
           <span class="num">[ 03 ]</span>
           <div class="service__body">
             <h3>AI Voice Agents</h3>
@@ -132,7 +136,7 @@
             <p class="tags">Call handling · Customer queries · Lead capture · Workflow actions</p>
           </div>
         </li>
-        <li class="service reveal">
+          <li class="service">
           <span class="num">[ 04 ]</span>
           <div class="service__body">
             <h3>Appointment &amp; Calendar Automation</h3>
@@ -140,7 +144,7 @@
             <p class="tags">Availability checks · Smart booking · Rescheduling · Reminders</p>
           </div>
         </li>
-        <li class="service reveal">
+          <li class="service">
           <span class="num">[ 05 ]</span>
           <div class="service__body">
             <h3>CRM, Dashboards &amp; Workflow Automation</h3>
@@ -148,7 +152,7 @@
             <p class="tags">CRM · Dashboards · Follow-ups · Workflow automation</p>
           </div>
         </li>
-        <li class="service reveal">
+          <li class="service">
           <span class="num">[ 06 ]</span>
           <div class="service__body">
             <h3>Integrations, Hosting &amp; Ongoing Support</h3>
@@ -156,7 +160,12 @@
             <p class="tags">Integrations · Hosting · Monitoring · Optimisation</p>
           </div>
         </li>
-      </ol>
+          </ol>
+        </div>
+        <div class="wrap">
+          <p class="rail-hint">Scroll to explore the services →</p>
+        </div>
+      </div>
     </div>
   </section>
 

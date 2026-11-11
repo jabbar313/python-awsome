@@ -38,6 +38,41 @@
     note.textContent = `We have opened a draft to ${EMAIL} with your details. Hit send and we will be in touch.`;
   });
 
+  // Services rail: on wide screens the section pins and scroll drives the cards sideways.
+  // Otherwise the rail stays a native horizontal scroller (phones, reduced motion, no JS).
+  const railQuery = matchMedia('(min-width: 981px)');
+  const railTrigger = document.getElementById('rail-trigger');
+  const railViewport = railTrigger.querySelector('.rail-viewport');
+  const railTrack = document.getElementById('service-rail');
+  let railTravel = 0;
+  let railFrame = 0;
+
+  const pinnedRail = () => railQuery.matches && !reduce;
+  const moveRail = () => {
+    if (!pinnedRail() || !railTravel) return;
+    const start = railTrigger.getBoundingClientRect().top + scrollY;
+    const p = Math.min(1, Math.max(0, (scrollY - start) / railTravel));
+    railTrack.style.transform = `translate3d(${Math.round(-railTravel * p)}px,0,0)`;
+  };
+  const measureRail = () => {
+    railTrigger.classList.toggle('is-pinned', pinnedRail());
+    railTrack.style.transform = '';
+    railTrigger.style.height = '';
+    railTravel = 0;
+    if (!pinnedRail()) return;
+    const lastCard = railTrack.lastElementChild.getBoundingClientRect();
+    const endGap = parseFloat(getComputedStyle(railTrack).paddingRight);
+    railTravel = Math.max(0, Math.ceil(lastCard.right + endGap - railViewport.getBoundingClientRect().right));
+    railTrigger.style.height = `${innerHeight + railTravel}px`;
+    moveRail();
+  };
+  window.addEventListener('scroll', () => {
+    if (!railFrame) railFrame = requestAnimationFrame(() => { railFrame = 0; moveRail(); });
+  }, { passive: true });
+  window.addEventListener('resize', measureRail);
+  railQuery.addEventListener('change', measureRail);
+  measureRail();
+
   // Motion: only when GSAP has loaded. Elements are hidden by script, never by CSS,
   // and a 2.6s safety net force-shows anything still hidden.
   if (!window.gsap || reduce) return;
