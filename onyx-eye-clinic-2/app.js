@@ -211,83 +211,44 @@ const WA_NUMBER = "";
   }
 
   /* ====================================================================
-     EVERY EYE IS DIFFERENT — the iris-scroll engine.
-     One requestAnimationFrame loop, active only near the section. Native scroll only:
-     we read a progress number p (0..1) and lerp a smoothed `current` toward it, then
-     drive transforms/opacity. Nothing hijacks the scroll. On phones (or a coarse
-     pointer) it steps one eye at a time and ends on a 3+2 grid. Reduced motion and
-     no-JS keep the complete static layout.
+     EVERY EYE IS DIFFERENT — the iris ring engine (DESIGN-BRIEF-v3-changes Part 2).
+     Native scroll only: one requestAnimationFrame loop, active only near the section.
+     We read a progress number p (0..1) across the section, lerp a smoothed `current`
+     toward it, and for each of the ten eyes drive its polar values — angle --a, radius
+     --r (as a multiple of the CSS --R) and scale --s, plus opacity. Interpolating the
+     polar values (not x/y) makes each eye fly in along a gentle spiral. ONE mode for
+     both widths; only the start-radius factor differs. Reduced motion / no-JS keep the
+     CSS finished ring (no html.iris-anim), and teardown clears the inline styles so the
+     finished ring returns.
      ==================================================================== */
 
-  // Keyframe stops. p breakpoints, then per-eye {x(vw), y(vh), s(scale), r(deg), o(opacity)}.
-  var P = [0, 0.12, 0.32, 0.55, 0.78, 0.92];
-  var KF = {
-    // enters centred, grows in, then slides left into the row
-    blue:  { x: [0, 0, -9, -14, -17, -17], y: [0, 0, 1, 1, 1, 1], s: [0.70, 1.00, 0.92, 0.90, 0.90, 0.90], r: [0, 0, -4, -5, 0, 0], o: [0, 1, 1, 1, 1, 1] },
-    // drifts in from the right during 0.12-0.32
-    green: { x: [34, 34, 19, 18, 17, 17], y: [-3, -3, -1, 0, 1, 1], s: [0.62, 0.62, 0.84, 0.87, 0.90, 0.90], r: [9, 9, 4, 2, 0, 0], o: [0, 0, 1, 1, 1, 1] },
-    // rises from below to the centre during 0.32-0.55 (the biggest, centre of the arc)
-    hazel: { x: [0, 0, 0, 0, 0, 0], y: [36, 36, 36, -4, -4, -4], s: [0.70, 0.70, 0.70, 1.00, 1.00, 1.00], r: [0, 0, 0, 0, 0, 0], o: [0, 0, 0, 1, 1, 1] },
-    // enters from the lower-left corner during 0.55-0.78
-    brown: { x: [-40, -40, -40, -40, -34, -34], y: [34, 34, 34, 34, 5, 5], s: [0.60, 0.60, 0.60, 0.60, 0.82, 0.82], r: [-11, -11, -11, -11, 0, 0], o: [0, 0, 0, 0, 1, 1] },
-    // enters from the lower-right corner during 0.55-0.78
-    grey:  { x: [40, 40, 40, 40, 34, 34], y: [34, 34, 34, 34, 5, 5], s: [0.60, 0.60, 0.60, 0.60, 0.82, 0.82], r: [11, 11, 11, 11, 0, 0], o: [0, 0, 0, 0, 1, 1] }
-  };
-  // Text beats: fade windows [inStart, inEnd, outStart, outEnd] per line (1-indexed by data-beat).
-  var BEATS = {
-    1: [0.14, 0.19, 0.29, 0.34],
-    2: [0.37, 0.42, 0.52, 0.57],
-    3: [0.59, 0.64, 0.73, 0.78],
-    4: [0.80, 0.85, 1.01, 1.02]
-  };
+  var START_LEAD = 60;      // degrees "behind" the final slot at the start
+  var WIN_LEN = 0.26;       // each eye's travel window length
+  var T0_BASE = 0.04, T0_STEP = 0.07;  // eye k starts at p = 0.04 + 0.07k
+  var FADE = 0.08;          // opacity ramp length
+  var RING_DONE = 0.93;     // ring complete here; the last 7% holds still
 
   function clamp01(t) { return t < 0 ? 0 : t > 1 ? 1 : t; }
   function smoothstep(t) { t = clamp01(t); return t * t * (3 - 2 * t); }
-  function beatOpacity(p, w) {
-    if (p < w[0] || p > w[3]) return 0;
-    if (p < w[1]) return smoothstep((p - w[0]) / (w[1] - w[0]));
-    if (p <= w[2]) return 1;
-    return smoothstep(1 - (p - w[2]) / (w[3] - w[2]));
-  }
-  function sampleField(arr, p) {
-    if (p <= P[0]) return arr[0];
-    if (p >= P[P.length - 1]) return arr[arr.length - 1];
-    for (var i = 0; i < P.length - 1; i++) {
-      if (p <= P[i + 1]) {
-        var t = smoothstep((p - P[i]) / (P[i + 1] - P[i]));
-        return arr[i] + (arr[i + 1] - arr[i]) * t;
-      }
-    }
-    return arr[arr.length - 1];
-  }
 
   function setupIris() {
     var section = document.getElementById("iris-scroll");
     if (!section) return;
     var stage = section.querySelector(".iris-stage");
-    var head = section.querySelector(".iris-head");
     var figs = Array.prototype.slice.call(section.querySelectorAll(".iris-fig"));
-    var lines = Array.prototype.slice.call(section.querySelectorAll(".iris-line"));
-    var figMap = {};
-    figs.forEach(function (f) { figMap[f.getAttribute("data-iris")] = f; });
+    if (!stage || !figs.length) return;
 
-    var mode = null;          // 'desktop' | 'mobile' | null (static)
-    var raf = 0, running = false, near = false;
+    var anim = false, raf = 0, running = false, near = false;
     var current = 0, target = 0;
     var io = null, scrollHandler = null;
-    var lastIdx = -1, lastGrid = null;
 
     window.__irisFrames = 0;
     window.__irisRunning = false;
     window.__irisMode = "static";
 
-    function pickMode() {
-      if (reduceMQ.matches) return null;
-      var coarse = window.matchMedia("(pointer: coarse)").matches;
-      // Width is the primary signal; a coarse pointer also opts into the stepping mode.
-      if (window.innerWidth < 700 || coarse) return "mobile";
-      return "desktop";
-    }
+    function wantsAnim() { return !reduceMQ.matches; }
+    // Start radius: 1.60 R on desktop, 1.45 R on phones (the one width-dependent constant).
+    function r0Factor() { return window.innerWidth < 700 ? 1.45 : 1.60; }
 
     function progress() {
       var r = section.getBoundingClientRect();
@@ -295,52 +256,27 @@ const WA_NUMBER = "";
       return clamp01(-r.top / denom);
     }
 
-    function renderDesktop(p) {
-      for (var name in KF) {
-        if (!KF.hasOwnProperty(name)) continue;
-        var kf = KF[name], f = figMap[name];
-        if (!f) continue;
-        var x = sampleField(kf.x, p), y = sampleField(kf.y, p), s = sampleField(kf.s, p),
-            rot = sampleField(kf.r, p), o = sampleField(kf.o, p);
-        f.style.opacity = o.toFixed(3);
-        f.style.transform = "translate(-50%,-50%) translate3d(" + x.toFixed(2) + "vw," + y.toFixed(2) + "vh,0) scale(" + s.toFixed(3) + ") rotate(" + rot.toFixed(2) + "deg)";
-        var cap = f.lastElementChild;           // figcaption
-        var co = p >= 0.76 ? smoothstep((p - 0.76) / 0.09) : 0;
-        if (cap) cap.style.opacity = co.toFixed(3);
-      }
-      if (head) head.style.opacity = "1";   // section title stays as a calm anchor
-      lines.forEach(function (ln) {
-        var b = BEATS[ln.getAttribute("data-beat")];
-        var o = b ? beatOpacity(p, b) : 1;
-        ln.style.opacity = o.toFixed(3);
-        ln.style.transform = "translateX(-50%) translateY(" + ((1 - o) * 12).toFixed(1) + "px)";
-      });
-      // One-time pupil "breath" as the eyes settle (0.78-0.94). Reversible, calm.
-      var bp = 1;
-      if (p > 0.78 && p < 0.94) bp = 1 + 0.04 * Math.sin((p - 0.78) / 0.16 * Math.PI * 2);
-      stage.style.setProperty("--pupil-scale", bp.toFixed(4));
-    }
-
-    function renderMobile(p) {
-      var grid = p >= 0.9;
-      if (grid !== lastGrid) { section.classList.toggle("show-grid", grid); lastGrid = grid; }
-      if (grid) {
-        if (lastIdx !== 99) { figs.forEach(function (f) { f.style.opacity = "1"; }); lastIdx = 99; }
-      } else {
-        var idx = Math.min(4, Math.floor(p / 0.2 + 0.0001));
-        if (idx !== lastIdx) {
-          figs.forEach(function (f, i) { f.style.opacity = i === idx ? "1" : "0"; });
-          lastIdx = idx;
-        }
-      }
-      var lineIdx = p < 0.22 ? 0 : p < 0.45 ? 1 : p < 0.68 ? 2 : 3;
-      lines.forEach(function (ln, i) { ln.style.opacity = i === lineIdx ? "1" : "0"; });
-      if (head) head.style.opacity = "1";
-    }
-
     function render(p) {
-      if (mode === "desktop") renderDesktop(p);
-      else if (mode === "mobile") renderMobile(p);
+      var f0 = r0Factor();
+      for (var i = 0; i < figs.length; i++) {
+        var fig = figs[i];
+        var k = parseFloat(fig.style.getPropertyValue("--k"));
+        if (isNaN(k)) k = i;
+        var t0 = T0_BASE + T0_STEP * k;
+        var e = smoothstep(clamp01((p - t0) / WIN_LEN));
+        var a = (36 * k - START_LEAD) + START_LEAD * e;   // deg, ends at 36k
+        var factor = f0 + (1 - f0) * e;                   // multiple of --R, ends at 1
+        var s = 0.70 + 0.30 * e;
+        var o = clamp01((p - t0) / FADE);
+        fig.style.setProperty("--a", a.toFixed(2) + "deg");
+        fig.style.setProperty("--r", "calc(" + factor.toFixed(4) + " * var(--R))");
+        fig.style.setProperty("--s", s.toFixed(3));
+        fig.style.opacity = o.toFixed(3);
+      }
+      // Pupil "breath" as the ring settles (0.80-0.93): 1 -> 1.04 -> 1, a single sin hump.
+      var bp = 1;
+      if (p > 0.80 && p < RING_DONE) bp = 1 + 0.04 * Math.sin((p - 0.80) / (RING_DONE - 0.80) * Math.PI);
+      stage.style.setProperty("--pupil-scale", bp.toFixed(4));
     }
 
     function frame() {
@@ -354,17 +290,17 @@ const WA_NUMBER = "";
       if (Math.abs(target - current) < 0.0005) { running = false; window.__irisRunning = false; raf = 0; return; }
       raf = requestAnimationFrame(frame);
     }
-    function start() { if (!running && mode) { running = true; window.__irisRunning = true; raf = requestAnimationFrame(frame); } }
+    function start() { if (!running && anim) { running = true; window.__irisRunning = true; raf = requestAnimationFrame(frame); } }
 
     function clearStyles() {
       figs.forEach(function (f) {
-        f.style.opacity = ""; f.style.transform = "";
-        if (f.lastElementChild) f.lastElementChild.style.opacity = "";
+        f.style.opacity = "";
+        f.style.removeProperty("--a");
+        f.style.removeProperty("--r");
+        f.style.removeProperty("--s");
+        f.style.willChange = "";
       });
-      lines.forEach(function (ln) { ln.style.opacity = ""; ln.style.transform = ""; });
-      if (head) head.style.opacity = "";
       if (stage) stage.style.removeProperty("--pupil-scale");
-      section.classList.remove("show-grid");
     }
 
     function teardown() {
@@ -373,24 +309,23 @@ const WA_NUMBER = "";
       if (io) { io.disconnect(); io = null; }
       if (scrollHandler) { window.removeEventListener("scroll", scrollHandler); scrollHandler = null; }
       document.documentElement.classList.remove("iris-anim");
-      section.removeAttribute("data-mode");
+      if (stage) stage.classList.remove("is-live");
       clearStyles();
-      lastIdx = -1; lastGrid = null;
-      mode = null; window.__irisMode = "static";
+      anim = false; window.__irisMode = "static";
     }
 
     function build() {
-      mode = pickMode();
-      if (!mode) { window.__irisMode = "static"; return; }   // reduced motion / unsupported -> static
+      if (!wantsAnim()) { window.__irisMode = "static"; return; }   // reduced motion -> static finished ring
+      anim = true;
       document.documentElement.classList.add("iris-anim");
-      section.setAttribute("data-mode", mode);
-      window.__irisMode = mode;
+      window.__irisMode = "ring";
       current = target = progress();
       render(current);                                        // first frame synchronously: no flash
 
       near = false;
       io = new IntersectionObserver(function (entries) {
         near = entries[0].isIntersecting;
+        if (stage) stage.classList.toggle("is-live", near);    // will-change only while near
         if (near) start();
       }, { rootMargin: "100% 0px 100% 0px", threshold: 0 });
       io.observe(section);
@@ -401,7 +336,7 @@ const WA_NUMBER = "";
 
     // Deterministic hook for the self-check: render an exact p and report values.
     window.__irisRenderAt = function (p) {
-      if (!mode) return null;
+      if (!anim) return null;
       current = target = clamp01(p);
       render(current);
       return current;
@@ -409,13 +344,13 @@ const WA_NUMBER = "";
 
     build();
 
-    // Rebuild on viewport changes that flip desktop <-> mobile, and on reduced-motion toggles.
+    // Width changes (desktop<->phone) are handled live by the CSS --R/--d vars and r0Factor();
+    // only a reduced-motion change needs a rebuild.
     var resizeTimer = 0;
     window.addEventListener("resize", function () {
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(function () {
-        var want = pickMode();
-        if (want !== mode) { teardown(); build(); }
+        if (wantsAnim() !== anim) { teardown(); build(); }
       }, 200);
     });
     var onReduceChange = function () { teardown(); build(); };

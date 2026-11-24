@@ -29,13 +29,19 @@
   --banner-h: 36px;
 }
 
-/* Iris colours: solid bands (hue) + fixed-colour depth overlays live in the SVG symbol.
-   Each instance sets these four hues and a small fibre rotation so the five eyes read apart. */
-.iris--blue  { --i-inner:#A9C7E0; --i-mid:#4F7FAE; --i-outer:#2C5680; --i-ring:#1D3A5A; --i-fibre-rot:0deg; }
-.iris--green { --i-inner:#B5D1A8; --i-mid:#5F8F62; --i-outer:#34603F; --i-ring:#234329; --i-fibre-rot:140deg; }
-.iris--hazel { --i-inner:#D8B071; --i-mid:#9A7D3F; --i-outer:#6B4A28; --i-ring:#4A3219; --i-fibre-rot:72deg; }
-.iris--brown { --i-inner:#A8744A; --i-mid:#6B4226; --i-outer:#3D2412; --i-ring:#26150A; --i-fibre-rot:215deg; }
-.iris--grey  { --i-inner:#CFD6DC; --i-mid:#8D98A3; --i-outer:#5B6772; --i-ring:#3B444C; --i-fibre-rot:290deg; }
+/* Iris colours: solid bands (hue) + fixed-colour depth overlays live in the SVG symbols.
+   Each instance sets these four hues and a distinct fibre rotation so the ten eyes read apart.
+   Five original colours plus five new natural tones; order around the ring is set per slot. */
+.iris--blue       { --i-inner:#A9C7E0; --i-mid:#4F7FAE; --i-outer:#2C5680; --i-ring:#1D3A5A; --i-fibre-rot: 11deg; }
+.iris--hazel      { --i-inner:#D8B071; --i-mid:#9A7D3F; --i-outer:#6B4A28; --i-ring:#4A3219; --i-fibre-rot: 47deg; }
+.iris--grey       { --i-inner:#CFD6DC; --i-mid:#8D98A3; --i-outer:#5B6772; --i-ring:#3B444C; --i-fibre-rot: 83deg; }
+.iris--brown      { --i-inner:#A8744A; --i-mid:#6B4226; --i-outer:#3D2412; --i-ring:#26150A; --i-fibre-rot:119deg; }
+.iris--green      { --i-inner:#B5D1A8; --i-mid:#5F8F62; --i-outer:#34603F; --i-ring:#234329; --i-fibre-rot:155deg; }
+.iris--amber      { --i-inner:#E2B25A; --i-mid:#B9822E; --i-outer:#7A4E1C; --i-ring:#4E300F; --i-fibre-rot:191deg; }
+.iris--steel      { --i-inner:#B7CCDA; --i-mid:#6C8CA8; --i-outer:#3F5F7C; --i-ring:#263E54; --i-fibre-rot:227deg; }
+.iris--darkbrown  { --i-inner:#7A4B2A; --i-mid:#4A2A15; --i-outer:#24130A; --i-ring:#140A05; --i-fibre-rot:263deg; }
+.iris--greenhazel { --i-inner:#C5C57A; --i-mid:#7F8A45; --i-outer:#4A5A2E; --i-ring:#2E3A1B; --i-fibre-rot:299deg; }
+.iris--lightbrown { --i-inner:#D6A878; --i-mid:#A9743F; --i-outer:#6E4526; --i-ring:#46290F; --i-fibre-rot:335deg; }
 .iris { display: block; width: 100%; height: 100%; }
 .iris-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
 
@@ -451,7 +457,7 @@ h2 {
 .section-head { max-width: 640px; margin-bottom: 48px; }
 .section-head p { margin: 0; color: var(--ink-soft); font-size: 1.08rem; }
 
-/* ---------- Eye care (three services) ---------- */
+/* ---------- Eye care (eleven services) ---------- */
 .care-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -461,17 +467,19 @@ h2 {
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  min-height: 340px;
-  padding: 34px;
+  min-height: 226px;
+  padding: 30px;
   border-radius: var(--radius-xl);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 40px;
+  gap: 24px;
   color: var(--teal);
   background: var(--surface);
   box-shadow: inset 0 0 0 1px rgba(16, 38, 58, 0.08), 0 30px 60px -44px rgba(16, 38, 58, 0.45);
 }
+/* The lead (Vitreoretinal) card spans two columns on desktop. */
+.care-card-lead { grid-column: span 2; }
 .care-card-dark {
   color: #F4F2EC;
   background:
@@ -492,68 +500,125 @@ h2 {
   background: linear-gradient(140deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.01));
   transform: rotate(10deg);
 }
-.care-mark { display: block; width: 64px; height: 64px; }
+.care-mark { display: block; width: 56px; height: 56px; }
 .care-card h3 {
-  margin: 0 0 10px;
+  margin: 0 0 8px;
   font-family: var(--font-display);
-  font-size: clamp(1.5rem, 2.2vw, 1.9rem);
+  font-size: clamp(1.25rem, 1.8vw, 1.6rem);
   font-weight: 500;
-  line-height: 1.12;
+  line-height: 1.14;
   letter-spacing: -0.03em;
   color: var(--ink);
 }
+.care-card-lead h3 { font-size: clamp(1.6rem, 2.4vw, 2rem); }
 .care-card p { margin: 0; color: var(--ink-soft); }
 .care-card-dark h3 { color: #F4F2EC; }
 .care-card-dark p { color: rgba(244, 242, 236, 0.86); }
-.care-card .gap-chip { margin-top: 16px; }
+.care-card .gap-chip { margin-top: 14px; }
+
+/* Services responsive: 3 columns (lead spans 2) -> 2 columns (lead full width) -> 1-column
+   compact row cards at 390 px (40px icon left, title + two-line text right). */
+@media (max-width: 1100px) {
+  .care-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .care-card-lead { grid-column: span 2; }
+}
+@media (max-width: 760px) {
+  .care-grid { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .care-card,
+  .care-card-lead {
+    grid-column: auto;
+    min-height: 0;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 14px;
+    padding: 16px 18px;
+    border-radius: var(--radius-lg);
+  }
+  .care-mark { width: 40px; height: 40px; flex: none; }
+  .care-card h3,
+  .care-card-lead h3 { font-size: 1.05rem; margin-bottom: 4px; }
+  .care-card p { font-size: 0.95rem; line-height: 1.45; }
+  .care-card .gap-chip { margin-top: 8px; }
+}
 
 /* ====================================================================
-   EVERY EYE IS DIFFERENT — the signature iris-scroll section
-   Default (this block): a complete, readable static layout. This is what
-   no-JS and reduced-motion visitors see. The pinned/animated modes below
-   are switched on only by JS (html.iris-anim), with motion allowed.
+   EVERY EYE IS DIFFERENT — the signature iris ring
+   Default (no html.iris-anim): a complete, readable static layout — the
+   finished ring of ten code-drawn eyes with the title in the middle. This
+   is what no-JS and reduced-motion visitors see. JS adds html.iris-anim and
+   flies the eyes in along gentle spirals as you scroll; on teardown the
+   inline styles are cleared and the CSS finished ring returns.
+   Geometry (DESIGN-BRIEF-v3-changes.md Part 2): one formula for both widths;
+   only R, the eye size d and the vertical centre differ.
+     desktop (>=700px):  R = min(32vh, 21vw);   d = 0.52 R   (1440x900: R 288, d 150)
+     mobile  (<700px):   R = min(34.9vw, 19vh); d = 0.53 R   (390x844: R 136, d 72)
+   Each figure is centred on C and placed with rotate(a) translateY(-r) rotate(-a),
+   so --a (deg), --r (length) and --s drive the whole path; the last rotate keeps
+   the eye upright. Final ring: --a = 36deg*k, --r = R, --s = 1 (the CSS defaults).
    ==================================================================== */
 .iris-scroll { background: var(--stage); padding: clamp(72px, 9vw, 130px) 0; }
-.iris-stage { width: min(1180px, calc(100% - 48px)); margin: 0 auto; }
-.iris-head { text-align: center; margin: 0 auto clamp(30px, 5vw, 52px); max-width: 20ch; }
+.iris-stage {
+  position: relative;
+  width: min(1180px, calc(100% - 48px));
+  margin: 0 auto;
+  --R: min(32vh, 21vw);
+  --d: calc(0.52 * var(--R));
+  --cy: 50%;
+  height: calc(2 * var(--R) + var(--d) + 40px);
+}
+.iris-ring { position: absolute; inset: 0; }
+.iris-fig {
+  position: absolute;
+  left: 50%;
+  top: var(--cy);
+  width: var(--d);
+  height: var(--d);
+  margin: 0;
+  --a: calc(36deg * var(--k));
+  --r: var(--R);
+  --s: 1;
+  transform:
+    translate(-50%, -50%)
+    rotate(var(--a)) translateY(calc(var(--r) * -1)) rotate(calc(var(--a) * -1))
+    scale(var(--s));
+}
+.iris-fig .iris { width: 100%; height: 100%; }
+.iris-head {
+  position: absolute;
+  left: 50%;
+  top: var(--cy);
+  transform: translate(-50%, -50%);
+  /* scale the title box with the ring so it always fits inside the clear centre (r = R - d/2) */
+  width: min(330px, calc(1.24 * var(--R)));
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  z-index: 3;
+}
 #iris-title {
-  margin: 0 0 12px;
+  margin: 0 0 10px;
   font-family: var(--font-display);
-  font-size: clamp(2.2rem, 4.7vw, 4.5rem);
+  font-size: clamp(1.35rem, 5vw, 2.6rem);
   font-weight: 400;
-  line-height: 1.02;
-  letter-spacing: -0.035em;
+  line-height: 1.04;
+  letter-spacing: -0.03em;
   color: var(--ink);
 }
 .iris-sub {
   margin: 0;
-  font-size: clamp(1.05rem, 1.8vw, 1.35rem);
+  font-size: clamp(0.95rem, 1.7vw, 1.2rem);
   font-weight: 400;
   color: var(--ink-soft);
 }
-.iris-field {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: flex-start;
-  gap: clamp(20px, 4vw, 46px);
-  max-width: 720px;
-  margin: 0 auto clamp(36px, 6vw, 60px);
-}
-.iris-fig { margin: 0; width: clamp(120px, 20vw, 168px); text-align: center; }
-.iris-fig .iris { width: 100%; aspect-ratio: 1 / 1; height: auto; }
-.iris-fig figcaption {
-  margin-top: 12px;
-  font-family: var(--font-display);
-  font-size: 0.98rem;
-  font-weight: 500;
-  color: var(--ink);
-}
+
+/* The four story lines: a normal centred block right after the ring. */
+.iris-story { background: var(--stage); padding: clamp(28px, 5vw, 60px) 0 clamp(64px, 9vw, 120px); }
 .iris-copy { max-width: 54ch; margin: 0 auto; text-align: center; display: grid; gap: 16px; }
 .iris-line { margin: 0; font-size: clamp(1.08rem, 2vw, 1.5rem); font-weight: 300; line-height: 1.5; color: var(--ink); }
 
-/* ---------- Pinned stage, shared by both animated modes ---------- */
-html.iris-anim .iris-scroll { padding: 0; position: relative; }
+/* ---------- Pinned ring (switched on by JS only, motion allowed) ---------- */
+html.iris-anim .iris-scroll { padding: 0; position: relative; height: 360vh; }
 html.iris-anim .iris-stage {
   position: sticky;
   top: 0;
@@ -562,71 +627,18 @@ html.iris-anim .iris-stage {
   max-width: none;
   margin: 0;
   overflow: hidden;
-  display: block;
+  /* keep the top of the ring clear of the fixed banner + floating header at any viewport height */
+  --cy: max(55%, calc(124px + var(--R) + var(--d) / 2));
 }
-html.iris-anim .iris-head { position: absolute; left: 0; right: 0; margin: 0; padding: 0 24px; z-index: 3; max-width: none; }
-html.iris-anim .iris-field { position: absolute; inset: 0; display: block; max-width: none; margin: 0; }
-html.iris-anim .iris-copy { position: absolute; left: 0; right: 0; margin: 0; padding: 0 24px; z-index: 3; display: block; max-width: none; }
-html.iris-anim .iris-line { position: absolute; left: 50%; bottom: 0; transform: translateX(-50%); width: min(46ch, 92vw); margin: 0; }
-html.iris-anim .iris-fig { position: absolute; margin: 0; }
-html.iris-anim .iris-fig figcaption { position: absolute; top: calc(100% + 4px); left: 50%; transform: translateX(-50%); white-space: nowrap; margin: 0; }
+html.iris-anim .iris-stage.is-live .iris-fig { will-change: transform, opacity; }
 
-/* ---------- Desktop pinned mode (rAF keyframes) ---------- */
-html.iris-anim .iris-scroll[data-mode="desktop"] { height: 480vh; }
-/* keep the heading clear of the fixed banner + floating header */
-html.iris-anim .iris-scroll[data-mode="desktop"] .iris-head { top: clamp(120px, 15vh, 165px); }
-html.iris-anim .iris-scroll[data-mode="desktop"] .iris-copy { bottom: clamp(7vh, 10vh, 13vh); }
-html.iris-anim .iris-scroll[data-mode="desktop"] .iris-fig {
-  left: 50%;
-  top: 50%;
-  width: 26vh;
-  height: 26vh;
+/* One mode for both widths; only R, d, the vertical centre and the track height change. */
+@media (max-width: 699.98px) {
+  .iris-stage { --R: min(34.9vw, 19vh); --d: calc(0.53 * var(--R)); }
+  html.iris-anim .iris-scroll { height: 280svh; }
+  html.iris-anim .iris-stage { --cy: 50%; }
 }
-/* Captions fade in only once the eyes have settled into their row (names-on set by JS). */
-html.iris-anim .iris-scroll[data-mode="desktop"] .iris-fig figcaption { transition: opacity 0.6s var(--ease); }
-
-/* ---------- Mobile / coarse pinned mode (one eye at a time, then a 3+2 grid) ---------- */
-html.iris-anim .iris-scroll[data-mode="mobile"] { height: 260svh; }
-html.iris-anim .iris-scroll[data-mode="mobile"] .iris-head { top: clamp(112px, 15vh, 150px); }
-html.iris-anim .iris-scroll[data-mode="mobile"] #iris-title { font-size: clamp(1.9rem, 8vw, 2.6rem); }
-html.iris-anim .iris-scroll[data-mode="mobile"] .iris-fig {
-  top: 44%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: min(70vw, 280px);
-  height: auto;
-  transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
-}
-html.iris-anim .iris-scroll[data-mode="mobile"] .iris-fig .iris { aspect-ratio: 1 / 1; }
-html.iris-anim .iris-scroll[data-mode="mobile"] .iris-fig figcaption { transition: opacity 0.5s var(--ease); }
-html.iris-anim .iris-scroll[data-mode="mobile"] .iris-copy { bottom: clamp(7vh, 10vh, 12vh); }
-html.iris-anim .iris-scroll[data-mode="mobile"] .iris-line { width: min(32ch, 86vw); font-size: 1.08rem; transition: opacity 0.5s var(--ease); }
-
-/* End state on mobile: all five as a centred 3+2 grid with names. */
-html.iris-anim .iris-scroll[data-mode="mobile"].show-grid .iris-field {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-content: center;
-  gap: 18px 22px;
-  padding: 0 20px;
-  top: 16%;
-  bottom: 24%;
-  inset: 16% 0 24%;
-  height: auto;
-}
-html.iris-anim .iris-scroll[data-mode="mobile"].show-grid .iris-fig {
-  position: relative;
-  top: auto;
-  left: auto;
-  transform: none;
-  width: 96px;
-}
-html.iris-anim .iris-scroll[data-mode="mobile"].show-grid .iris-fig figcaption {
-  position: static;
-  transform: none;
-  margin-top: 8px;
-}
+@media (max-width: 400px) { .iris-sub { display: none; } }
 
 /* ---------- Meet Dr. Kamat ---------- */
 .doctor-grid {
@@ -696,6 +708,9 @@ html.iris-anim .iris-scroll[data-mode="mobile"].show-grid .iris-fig figcaption {
 .fact dt .icon { width: 22px; height: 22px; color: var(--teal); }
 .fact dd { margin: 0; color: var(--ink-soft); }
 .fact-note { margin-right: 6px; }
+.fact-edu { align-items: start; }
+.edu-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 5px; }
+.edu-list li { font-size: 1rem; line-height: 1.4; }
 
 /* ---------- Book a visit (four ways) ---------- */
 .booking {
@@ -923,6 +938,14 @@ html.iris-anim .iris-scroll[data-mode="mobile"].show-grid .iris-fig figcaption {
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.75), 0 34px 70px -40px rgba(16, 38, 58, 0.5);
 }
 .visit-card h2 { margin-top: 0; }
+
+/* The one consulting-room photo supplied by the doctor: framed, 16:9 cover, never upscaled. */
+.visit-photo { margin: 0 0 22px; max-width: 560px; }
+.visit-photo-frame { padding: 6px; border-radius: 24px; }
+.visit-photo-frame .bezel-core { border-radius: 20px; overflow: hidden; background: #E6DCCD; }
+.visit-photo img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; }
+.visit-photo figcaption { margin: 10px 2px 0; font-size: 0.92rem; color: var(--ink-soft); }
+
 .visit-address { margin: 0 0 12px; font-style: normal; font-size: 1.12rem; line-height: 1.6; }
 .visit-list { list-style: none; display: grid; gap: 20px; margin: 26px 0 30px; padding: 24px 0 0; border-top: 1px solid var(--line); }
 .visit-list li { display: flex; align-items: flex-start; gap: 14px; }
@@ -1009,9 +1032,6 @@ html.iris-anim .iris-scroll[data-mode="mobile"].show-grid .iris-fig figcaption {
   .hero-frame .bezel-core { height: 440px; }
   .float-card { position: relative; left: auto; bottom: auto; margin: -40px 18px 0; }
   .doctor-plate { min-height: 460px; }
-  .care-grid { grid-template-columns: minmax(0, 1fr); }
-  .care-card { min-height: 0; flex-direction: row; align-items: flex-start; justify-content: flex-start; gap: 22px; }
-  .care-mark { width: 52px; height: 52px; flex: none; }
   .footer-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
   .footer-fine { grid-column: 1 / -1; }
 }
@@ -1040,8 +1060,6 @@ html.iris-anim .iris-scroll[data-mode="mobile"].show-grid .iris-fig figcaption {
   .iris-stage { width: calc(100% - 32px); }
   .doctor-plate { min-height: 380px; padding: 28px; }
   .fact { grid-template-columns: minmax(0, 1fr); gap: 8px; }
-  .care-card { padding: 24px; border-radius: var(--radius-lg); gap: 18px; }
-  .care-mark { width: 44px; height: 44px; }
   .book-grid { grid-template-columns: minmax(0, 1fr); }
   .book-card { padding: 22px; border-radius: var(--radius-lg); }
   .call-panel { min-height: 140px; }
