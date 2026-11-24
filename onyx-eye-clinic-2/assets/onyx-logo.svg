@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="272" height="48" viewBox="0 0 272 48" role="img" aria-labelledby="t">
+  <title id="t">Onyx Eye Clinic logo (concept design by Tayhami Labs, for review)</title>
+  <defs>
+    <linearGradient id="onyx-tile" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1D5B5E"/>
+      <stop offset="1" stop-color="#10263A"/>
+    </linearGradient>
+  </defs>
+  <!-- Mark: a dark onyx tile holding a lens ring; the ring's upper right rim catches a warm light. -->
+  <rect width="48" height="48" rx="14" fill="url(#onyx-tile)"/>
+  <path d="M34.43 24.25A12 12 0 1 1 23.34 13.53" fill="none" stroke="#F4F2EC" stroke-width="3.4"/>
+  <path d="M27.38 14.54A12 12 0 0 1 33.29 20.24" fill="none" stroke="#E3A35E" stroke-width="3.4" stroke-linecap="round"/>
+  <!-- Wordmark: Sora (falls back to the system sans if Sora is not installed). -->
+  <text x="62" y="32" font-family="Sora, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="22" letter-spacing="-0.4" fill="#10263A"><tspan font-weight="600">Onyx</tspan><tspan font-weight="400" fill="#1D5B5E"> Eye Clinic</tspan></text>
+</svg>

@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 800 1000">
+  <title>Soft light through glass panes (abstract illustration, drawn in code)</title>
+  <defs>
+    <linearGradient id="bg" x1="0.1" y1="0" x2="0.45" y2="1">
+      <stop offset="0" stop-color="#F4E9D8"/>
+      <stop offset="0.34" stop-color="#B9CEC6"/>
+      <stop offset="0.66" stop-color="#2F6B6A"/>
+      <stop offset="1" stop-color="#10263A"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="0.82" cy="0.12" r="0.62">
+      <stop offset="0" stop-color="#FFE1B3" stop-opacity="0.95"/>
+      <stop offset="0.32" stop-color="#F1B36D" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#F1B36D" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="pool" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#FFE7BF" stop-opacity="0.85"/>
+      <stop offset="1" stop-color="#FFE7BF" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="beam" x1="1" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFF5E4" stop-opacity="0.75"/>
+      <stop offset="0.55" stop-color="#FFF5E4" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#FFF5E4" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="pane" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.46"/>
+      <stop offset="0.48" stop-color="#FFFFFF" stop-opacity="0.08"/>
+      <stop offset="1" stop-color="#CFE6E0" stop-opacity="0.22"/>
+    </linearGradient>
+    <linearGradient id="paneDeep" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#E6F2EE" stop-opacity="0.34"/>
+      <stop offset="0.6" stop-color="#7FB1AA" stop-opacity="0.10"/>
+      <stop offset="1" stop-color="#1D5B5E" stop-opacity="0.30"/>
+    </linearGradient>
+    <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.95"/>
+      <stop offset="0.4" stop-color="#FFFFFF" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0.55"/>
+    </linearGradient>
+    <linearGradient id="shadow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0B1D2C" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#0B1D2C" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="blur18" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="18"/></filter>
+    <filter id="blur40" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="40"/></filter>
+    <filter id="blur6" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="6"/></filter>
+    <filter id="grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" stitchTiles="stitch"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.06  0 0 0 0 0.15  0 0 0 0 0.23  0.55 0 0 0 -0.18"/>
+    </filter>
+  </defs>
+
+  <rect width="800" height="1000" fill="url(#bg)"/>
+  <rect width="800" height="1000" fill="url(#sun)"/>
+
+  <!-- soft shafts of light -->
+  <g filter="url(#blur18)">
+    <polygon points="860,20 960,120 300,1040 150,1040" fill="url(#beam)"/>
+    <polygon points="720,-40 790,0 110,960 10,930" fill="url(#beam)" opacity="0.55"/>
+  </g>
+
+  <!-- shadows the panes cast toward the lower left -->
+  <g filter="url(#blur40)">
+    <polygon points="170,820 470,820 330,1000 20,1000" fill="url(#shadow)" opacity="0.7"/>
+  </g>
+
+  <!-- warm pool of light on the surface -->
+  <ellipse cx="430" cy="820" rx="300" ry="90" fill="url(#pool)" filter="url(#blur18)" opacity="0.75"/>
+
+  <!-- back pane -->
+  <g transform="rotate(-10 330 520)">
+    <rect x="150" y="250" width="320" height="470" rx="38" fill="url(#paneDeep)" stroke="url(#edge)" stroke-width="2"/>
+    <rect x="166" y="266" width="288" height="438" rx="30" fill="none" stroke="#FFFFFF" stroke-opacity="0.18" stroke-width="1"/>
+  </g>
+
+  <!-- front pane -->
+  <g transform="rotate(5 470 500)">
+    <rect x="320" y="220" width="300" height="450" rx="38" fill="url(#pane)" stroke="url(#edge)" stroke-width="2"/>
+    <rect x="340" y="236" width="10" height="320" rx="5" fill="#FFFFFF" opacity="0.5" filter="url(#blur6)"/>
+  </g>
+
+  <!-- low glass block catching the light -->
+  <g transform="rotate(-4 430 700)">
+    <rect x="250" y="620" width="360" height="150" rx="36" fill="url(#pane)" stroke="url(#edge)" stroke-width="2.5"/>
+    <rect x="276" y="636" width="250" height="18" rx="9" fill="#FFFFFF" opacity="0.55" filter="url(#blur6)"/>
+    <rect x="250" y="700" width="360" height="70" rx="30" fill="#F1B36D" opacity="0.16"/>
+  </g>
+
+  <!-- caustic glints thrown onto the surface -->
+  <g filter="url(#blur6)" fill="#FFF3DC">
+    <path d="M300 860 C360 838 430 842 498 866 C430 872 362 874 300 860 Z" opacity="0.8"/>
+    <path d="M520 892 C560 880 610 882 650 896 C606 902 560 902 520 892 Z" opacity="0.6"/>
+    <path d="M210 900 C240 890 270 890 300 902 C268 908 238 908 210 900 Z" opacity="0.45"/>
+  </g>
+
+  <rect width="800" height="1000" filter="url(#grain)" opacity="0.6"/>
+</svg>

@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000">
+  <title>Soft light on a plaster wall (abstract illustration, drawn in code)</title>
+  <defs>
+    <linearGradient id="wall" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F6F3EC"/>
+      <stop offset="0.55" stop-color="#EDE7DB"/>
+      <stop offset="1" stop-color="#D9DDD5"/>
+    </linearGradient>
+    <radialGradient id="shade" gradientUnits="userSpaceOnUse" cx="1640" cy="1060" r="980">
+      <stop offset="0" stop-color="#10263A" stop-opacity="0.9"/>
+      <stop offset="0.3" stop-color="#1D5B5E" stop-opacity="0.66"/>
+      <stop offset="0.62" stop-color="#1D5B5E" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#1D5B5E" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="warm" cx="0.62" cy="0.3" r="0.5">
+      <stop offset="0" stop-color="#F3C285" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#F3C285" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="patch" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFF8EA" stop-opacity="0.95"/>
+      <stop offset="0.7" stop-color="#FBE3BD" stop-opacity="0.75"/>
+      <stop offset="1" stop-color="#F0B36C" stop-opacity="0.55"/>
+    </linearGradient>
+    <filter id="blur14" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="14"/></filter>
+    <filter id="blur30" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="30"/></filter>
+    <filter id="plaster" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.012 0.02" numOctaves="4" seed="3" result="n"/>
+      <feDiffuseLighting in="n" surfaceScale="2.2" lighting-color="#FFF6E8" result="lit">
+        <feDistantLight azimuth="225" elevation="58"/>
+      </feDiffuseLighting>
+      <feColorMatrix in="lit" type="matrix" values="0 0 0 0 0.35  0 0 0 0 0.3  0 0 0 0 0.22  -0.9 0 0 0 0.9"/>
+    </filter>
+    <filter id="grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="11" stitchTiles="stitch"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.06  0 0 0 0 0.15  0 0 0 0 0.23  0.5 0 0 0 -0.17"/>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="1000" fill="url(#wall)"/>
+  <rect width="1600" height="1000" filter="url(#plaster)" opacity="0.55"/>
+  <rect width="1600" height="1000" fill="url(#warm)"/>
+
+  <!-- window light falling diagonally across the wall -->
+  <g filter="url(#blur14)">
+    <polygon points="820,90 1060,40 1250,560 1010,610" fill="url(#patch)" opacity="0.85"/>
+    <polygon points="1100,30 1300,-10 1490,500 1290,540" fill="url(#patch)" opacity="0.7"/>
+    <polygon points="1030,640 1250,600 1360,880 1140,920" fill="url(#patch)" opacity="0.45"/>
+  </g>
+
+  <!-- the frame between the panes, softly out of focus -->
+  <g filter="url(#blur14)" fill="#1D5B5E" opacity="0.12">
+    <polygon points="1058,44 1100,32 1290,548 1250,560"/>
+  </g>
+
+  <!-- blurred leaf shadow passing over the light -->
+  <g filter="url(#blur30)" fill="#14304A" opacity="0.16">
+    <ellipse cx="1120" cy="250" rx="120" ry="34" transform="rotate(-28 1120 250)"/>
+    <ellipse cx="1210" cy="330" rx="90" ry="26" transform="rotate(-12 1210 330)"/>
+    <ellipse cx="1060" cy="380" rx="70" ry="22" transform="rotate(-40 1060 380)"/>
+  </g>
+
+  <rect width="1600" height="1000" fill="url(#shade)"/>
+  <rect width="1600" height="1000" filter="url(#grain)" opacity="0.55"/>
+</svg>
