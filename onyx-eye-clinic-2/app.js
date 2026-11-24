@@ -211,22 +211,39 @@ const WA_NUMBER = "";
   }
 
   /* ====================================================================
-     EVERY EYE IS DIFFERENT — the iris ring engine (DESIGN-BRIEF-v3-changes Part 2).
-     Native scroll only: one requestAnimationFrame loop, active only near the section.
-     We read a progress number p (0..1) across the section, lerp a smoothed `current`
-     toward it, and for each of the ten eyes drive its polar values — angle --a, radius
-     --r (as a multiple of the CSS --R) and scale --s, plus opacity. Interpolating the
-     polar values (not x/y) makes each eye fly in along a gentle spiral. ONE mode for
-     both widths; only the start-radius factor differs. Reduced motion / no-JS keep the
-     CSS finished ring (no html.iris-anim), and teardown clears the inline styles so the
-     finished ring returns.
+     EVERY EYE IS DIFFERENT — the iris ring engine (change round 2).
+     "One big eye moves around, then the others appear and make the circle; no eye
+     ever touches another." Native scroll only: one requestAnimationFrame loop, active
+     only near the section. We read a progress number p (0..1) across the pinned track
+     and lerp a smoothed `current` toward it; render(p) is a pure function of p, so the
+     whole story is reversible on scroll-up.
+       A  p 0.00-0.40  only the lead eye (k = 0, blue) is visible, about 2.5x ring size,
+                       drifting clockwise round a lazy loop about the ring centre with a
+                       slight iris turn. The other nine are opacity 0 AND scale 0. The
+                       title is hidden, so the big eye never covers text.
+       B  p 0.40-0.55  the lead eye shrinks to ring size while gliding into its own slot
+                       (the top of the ring).
+       C  p 0.55-0.85  the other nine appear one after another, clockwise from the lead
+                       eye, each growing in on its own spoke from 1.1 R to R, so it never
+                       crosses a neighbour. The title fades in (p 0.56-0.68) once the
+                       lead eye is home.
+       D  p 0.85-1.00  calm hold on the finished ring (one pupil breath).
+     The big eye's size and loop are fitted to the measured stage, header and phone bar,
+     so it stays fully on screen below the nav at any viewport. Only transform and
+     opacity change: eye position/scale through the --x/--y/--a/--r/--s vars of the CSS
+     transform, the iris turn as a transform on the inner svg, and the title's opacity.
+     Reduced motion / no-JS keep the CSS finished ring (no html.iris-anim), and teardown
+     clears the inline styles so the finished ring returns.
      ==================================================================== */
 
-  var START_LEAD = 60;      // degrees "behind" the final slot at the start
-  var WIN_LEN = 0.26;       // each eye's travel window length
-  var T0_BASE = 0.04, T0_STEP = 0.07;  // eye k starts at p = 0.04 + 0.07k
-  var FADE = 0.08;          // opacity ramp length
-  var RING_DONE = 0.93;     // ring complete here; the last 7% holds still
+  var A_END = 0.40, B_END = 0.55;    // phase ends (A: big eye loops, B: it shrinks home)
+  var C_STEP = 0.025, C_LEN = 0.10;  // eye k (1..9) grows in over p = 0.55 + 0.025(k-1) .. +0.10
+  var DRIFT = 0.10;                  // ring eyes start 10% further out on their own spoke
+  var BIG = 2.5;                     // lead eye size in phase A, as a multiple of the ring eye
+  var LOOP_FROM = -250;              // lead eye angle at p = 0 (deg clockwise from the top slot)
+  var TURN = 10;                     // slight iris turn (deg) while the big eye loops
+  var TITLE_IN = 0.56, TITLE_LEN = 0.12;
+  var BREATH_FROM = 0.86, BREATH_TO = 0.96;
 
   function clamp01(t) { return t < 0 ? 0 : t > 1 ? 1 : t; }
   function smoothstep(t) { t = clamp01(t); return t * t * (3 - 2 * t); }
@@ -235,11 +252,16 @@ const WA_NUMBER = "";
     var section = document.getElementById("iris-scroll");
     if (!section) return;
     var stage = section.querySelector(".iris-stage");
+    var head = section.querySelector(".iris-head");
     var figs = Array.prototype.slice.call(section.querySelectorAll(".iris-fig"));
     if (!stage || !figs.length) return;
 
+    var ks = figs.map(function (f, i) { var k = parseFloat(f.style.getPropertyValue("--k")); return isNaN(k) ? i : k; });
+    var lead = figs[ks.indexOf(0)] || figs[0];
+    var leadSvg = lead.querySelector(".iris");
+
     var anim = false, raf = 0, running = false, near = false;
-    var current = 0, target = 0;
+    var current = 0, target = 0, geo = null;
     var io = null, scrollHandler = null;
 
     window.__irisFrames = 0;
@@ -247,8 +269,6 @@ const WA_NUMBER = "";
     window.__irisMode = "static";
 
     function wantsAnim() { return !reduceMQ.matches; }
-    // Start radius: 1.60 R on desktop, 1.45 R on phones (the one width-dependent constant).
-    function r0Factor() { return window.innerWidth < 700 ? 1.45 : 1.60; }
 
     function progress() {
       var r = section.getBoundingClientRect();
@@ -256,26 +276,76 @@ const WA_NUMBER = "";
       return clamp01(-r.top / denom);
     }
 
+    // Stage geometry in px (only on build and resize). The ring radius R is read from the lead
+    // eye sitting in its CSS slot, so it always matches the finished ring exactly.
+    function measure() {
+      ["--x", "--y", "--a", "--r", "--s"].forEach(function (v) { lead.style.removeProperty(v); });
+      var W = stage.clientWidth, H = stage.clientHeight;
+      var d = lead.offsetWidth, cx = lead.offsetLeft, cy = lead.offsetTop;
+      var sr = stage.getBoundingClientRect(), lr = lead.getBoundingClientRect();
+      var R = (sr.top + cy) - (lr.top + lr.height / 2);
+      // Safe band for the big eye: below the fixed banner + floating header, above the phone bar.
+      var top = 0, bottom = H;
+      var banner = document.querySelector(".concept-banner");
+      var header = document.getElementById("header");
+      var bar = document.querySelector(".mobile-bar");
+      if (banner) top = banner.offsetHeight;
+      if (header) top = Math.max(top, (parseFloat(getComputedStyle(header).top) || 0) + header.offsetHeight);
+      if (bar && getComputedStyle(bar).display !== "none") bottom = H - bar.offsetHeight;
+      var m = W < 700 ? 12 : 16;
+      var big = Math.max(1, Math.min(BIG, 0.8 * Math.min(W - 2 * m, bottom - top - 2 * m) / (d || 1)));
+      var rb = big * d / 2;
+      geo = {
+        R: R, big: big,
+        ax: Math.max(0, Math.min(cx - m - rb, W - cx - m - rb, 1.2 * R)),
+        ay: Math.max(0, Math.min(cy - top - m - rb, bottom - m - rb - cy, 1.2 * R))
+      };
+    }
+
     function render(p) {
-      var f0 = r0Factor();
-      for (var i = 0; i < figs.length; i++) {
-        var fig = figs[i];
-        var k = parseFloat(fig.style.getPropertyValue("--k"));
-        if (isNaN(k)) k = i;
-        var t0 = T0_BASE + T0_STEP * k;
-        var e = smoothstep(clamp01((p - t0) / WIN_LEN));
-        var a = (36 * k - START_LEAD) + START_LEAD * e;   // deg, ends at 36k
-        var factor = f0 + (1 - f0) * e;                   // multiple of --R, ends at 1
-        var s = 0.70 + 0.30 * e;
-        var o = clamp01((p - t0) / FADE);
-        fig.style.setProperty("--a", a.toFixed(2) + "deg");
-        fig.style.setProperty("--r", "calc(" + factor.toFixed(4) + " * var(--R))");
-        fig.style.setProperty("--s", s.toFixed(3));
-        fig.style.opacity = o.toFixed(3);
+      if (!geo) measure();
+      // Lead eye: phases A + B, then parked in its CSS slot.
+      if (p < B_END) {
+        var ang = LOOP_FROM * (1 - smoothstep(p / B_END));     // deg, reaches 0 (its slot) at B_END
+        var tb = smoothstep((p - A_END) / (B_END - A_END));   // 0 = big loop, 1 = ring slot
+        var open = 0.45 + 0.55 * smoothstep(p / 0.30);        // the loop opens out from near the centre
+        var ax = geo.ax * open, ay = geo.ay * open;
+        ax += (geo.R - ax) * tb;
+        ay += (geo.R - ay) * tb;
+        var rad = ang * Math.PI / 180;
+        lead.style.setProperty("--x", (ax * Math.sin(rad)).toFixed(2) + "px");
+        lead.style.setProperty("--y", (-ay * Math.cos(rad)).toFixed(2) + "px");
+        lead.style.setProperty("--a", "0deg");
+        lead.style.setProperty("--r", "0px");
+        lead.style.setProperty("--s", (geo.big + (1 - geo.big) * tb).toFixed(4));
+        if (leadSvg) leadSvg.style.transform = "rotate(" + (TURN * ang / -LOOP_FROM).toFixed(2) + "deg)";
+      } else {
+        lead.style.setProperty("--x", "0px");
+        lead.style.setProperty("--y", "0px");
+        lead.style.setProperty("--a", "0deg");
+        lead.style.setProperty("--r", "calc(1 * var(--R))");
+        lead.style.setProperty("--s", "1");
+        if (leadSvg) leadSvg.style.transform = "";
       }
-      // Pupil "breath" as the ring settles (0.80-0.93): 1 -> 1.04 -> 1, a single sin hump.
+      lead.style.opacity = "1";
+
+      // The other nine: hidden through A and B, then each grows in at its own slot.
+      for (var i = 0; i < figs.length; i++) {
+        var fig = figs[i], k = ks[i];
+        if (fig === lead) continue;
+        var u = (p - (B_END + C_STEP * (k - 1))) / C_LEN;
+        var e = smoothstep(u);
+        fig.style.setProperty("--a", (36 * k) + "deg");
+        fig.style.setProperty("--r", "calc(" + (1 + DRIFT * (1 - e)).toFixed(4) + " * var(--R))");
+        fig.style.setProperty("--s", e.toFixed(4));
+        fig.style.opacity = smoothstep(u / 0.6).toFixed(3);
+      }
+
+      if (head) head.style.opacity = smoothstep((p - TITLE_IN) / TITLE_LEN).toFixed(3);
+
+      // Pupil "breath" on the finished ring: 1 -> 1.04 -> 1, a single sin hump.
       var bp = 1;
-      if (p > 0.80 && p < RING_DONE) bp = 1 + 0.04 * Math.sin((p - 0.80) / (RING_DONE - 0.80) * Math.PI);
+      if (p > BREATH_FROM && p < BREATH_TO) bp = 1 + 0.04 * Math.sin((p - BREATH_FROM) / (BREATH_TO - BREATH_FROM) * Math.PI);
       stage.style.setProperty("--pupil-scale", bp.toFixed(4));
     }
 
@@ -295,12 +365,13 @@ const WA_NUMBER = "";
     function clearStyles() {
       figs.forEach(function (f) {
         f.style.opacity = "";
-        f.style.removeProperty("--a");
-        f.style.removeProperty("--r");
-        f.style.removeProperty("--s");
+        ["--x", "--y", "--a", "--r", "--s"].forEach(function (v) { f.style.removeProperty(v); });
         f.style.willChange = "";
       });
+      if (leadSvg) leadSvg.style.transform = "";
+      if (head) head.style.opacity = "";
       if (stage) stage.style.removeProperty("--pupil-scale");
+      geo = null;
     }
 
     function teardown() {
@@ -319,6 +390,7 @@ const WA_NUMBER = "";
       anim = true;
       document.documentElement.classList.add("iris-anim");
       window.__irisMode = "ring";
+      measure();
       current = target = progress();
       render(current);                                        // first frame synchronously: no flash
 
@@ -334,7 +406,7 @@ const WA_NUMBER = "";
       window.addEventListener("scroll", scrollHandler, { passive: true });
     }
 
-    // Deterministic hook for the self-check: render an exact p and report values.
+    // Deterministic hook for the self-check: render an exact p (smoothing bypassed).
     window.__irisRenderAt = function (p) {
       if (!anim) return null;
       current = target = clamp01(p);
@@ -344,13 +416,14 @@ const WA_NUMBER = "";
 
     build();
 
-    // Width changes (desktop<->phone) are handled live by the CSS --R/--d vars and r0Factor();
-    // only a reduced-motion change needs a rebuild.
+    // Width/height changes: re-fit the big eye's size and loop to the new stage. A reduced-motion
+    // change needs a full rebuild.
     var resizeTimer = 0;
     window.addEventListener("resize", function () {
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(function () {
-        if (wantsAnim() !== anim) { teardown(); build(); }
+        if (wantsAnim() !== anim) { teardown(); build(); return; }
+        if (anim) { measure(); render(current); }
       }, 200);
     });
     var onReduceChange = function () { teardown(); build(); };

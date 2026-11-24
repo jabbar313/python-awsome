@@ -829,15 +829,6 @@
           </div>
           <div class="visit-card">
             <h2 id="visit-title">Visit us</h2>
-            <figure class="visit-photo">
-              <div class="bezel visit-photo-frame">
-                <div class="bezel-core">
-                  <img src="assets/consulting-room.jpg" width="596" height="335" loading="lazy" decoding="async"
-                       alt="Consulting room with a blue examination chair, an eye examination unit, a desk and a glass door." />
-                </div>
-              </div>
-              <figcaption>The consulting room.</figcaption>
-            </figure>
             <address class="visit-address">
               <strong>Onyx Eye Clinic</strong><br />
               Ground Floor, Guru Plaza<br />
@@ -882,6 +873,39 @@
             </div>
           </div>
         </div>
+
+        <!-- The doctor's three clinic photos (consent: use_photos yes): one equal-height row on wider
+             screens, stacked on phones. The consulting-room and corridor photos are the doctor's
+             originals, byte-for-byte; no photo is ever shown larger than its natural size. -->
+        <div class="visit-photos" data-reveal>
+          <figure class="visit-photo visit-photo--entrance">
+            <div class="bezel visit-photo-frame">
+              <div class="bezel-core">
+                <img src="assets/entrance.jpg" width="1200" height="1200" loading="lazy" decoding="async"
+                     alt="Clinic entrance with a wood-panelled wall, a round emblem and a name board in raised white letters, plants and a glass door." />
+              </div>
+            </div>
+            <figcaption>The entrance.</figcaption>
+          </figure>
+          <figure class="visit-photo visit-photo--consult">
+            <div class="bezel visit-photo-frame">
+              <div class="bezel-core">
+                <img src="assets/consulting-room.jpg" width="596" height="335" loading="lazy" decoding="async"
+                     alt="Consulting room with a blue examination chair, an eye examination unit, a desk and a glass door." />
+              </div>
+            </div>
+            <figcaption>The consulting room.</figcaption>
+          </figure>
+          <figure class="visit-photo visit-photo--corridor">
+            <div class="bezel visit-photo-frame">
+              <div class="bezel-core">
+                <img src="assets/corridor.jpg" width="360" height="360" loading="lazy" decoding="async"
+                     alt="Clinic corridor with a wood-panelled wall bearing a round emblem, potted plants, a bench and a dark carpet runner." />
+              </div>
+            </div>
+            <figcaption>The corridor.</figcaption>
+          </figure>
+        </div>
       </div>
     </section>
   </main>
@@ -913,7 +937,7 @@
         <p>Information on this page is general and not a substitute for medical advice.</p>
         <p>Concept preview made by Tayhami Labs, not the clinic's official website.</p>
         <p>Logo: concept design by Tayhami Labs, for review.</p>
-        <p>Imagery drawn in code. One photo of the consulting room, supplied by the doctor; no photos of people or patients.</p>
+        <p>Imagery drawn in code. Photos of the entrance, consulting room and corridor, supplied by the doctor; the entrance photo was sharpened with an AI tool, nothing added or removed. No photos of people or patients.</p>
       </div>
     </div>
   </footer>
