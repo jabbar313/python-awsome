@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="-24 -24 48 48" width="96" height="96" role="img" aria-label="Aster Dental Clinic concept mark">
-  <g fill="#7A1F2B">
+  <g fill="#E1A80F">
     <ellipse cx="0" cy="-11" rx="5" ry="10"/>
     <ellipse cx="0" cy="-11" rx="5" ry="10" transform="rotate(60)"/>
     <ellipse cx="0" cy="-11" rx="5" ry="10" transform="rotate(120)"/>
@@ -8,5 +8,5 @@
     <ellipse cx="0" cy="-11" rx="5" ry="10" transform="rotate(300)"/>
   </g>
   <circle r="5.2" fill="#FFFFFF"/>
-  <circle r="2.6" fill="#C7848D"/>
+  <circle r="2.6" fill="#7A5A00"/>
 </svg>
